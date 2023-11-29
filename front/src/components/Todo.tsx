@@ -1,24 +1,47 @@
-"use client"
-
-import { faPenToSquare } from "@fortawesome/free-regular-svg-icons"
+import { deleteTodo, updateTodo } from "@/lib/todoService"
+import { Todo } from "@/lib/types"
 import { faTrash } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Todo } from "./TodoWrapper"
+import { revalidatePath } from "next/cache"
 
+async function handleDelete(todoId: string) {
+  "use server"
+  const res = await deleteTodo(todoId)
 
-export const TodoComponent = ({task, deleteTodo, editTodo, toggleComplete}: {
+  if (res) {
+    console.log('deleted')
+    revalidatePath('/')
+  }
+}
+
+async function handleUpdate(todoId: string) {
+  "use server"
+
+  const res = await updateTodo(todoId, {
+    status: "done",
+  })
+
+  if (res) {
+    revalidatePath('/')
+  }
+}
+
+export async function TodoComponent({ task }: {
   task: Todo,
-  deleteTodo: (id: string) => void,
-  editTodo: (id: string) => void,
-  toggleComplete: (id: string) => void
-}) => {
- return (
+}) {
+
+  const handleSubmitWithTodoId = handleDelete.bind(null, task.id)
+
+  return (
     <div className="Todo">
-        <p className={`${task.completed ? "completed" : "incompleted"}`} onClick={() => toggleComplete(task.id)}>{task.task}</p>
-        <div>
-        <FontAwesomeIcon className="edit-icon" icon={faPenToSquare} onClick={() => editTodo(task.id)} />
-        <FontAwesomeIcon className="delete-icon" icon={faTrash} onClick={() => deleteTodo(task.id)} />
-        </div>
+      <p className={`${task.status == "done" ? "completed" : "incompleted"}`}>
+        {task.title}
+      </p>
+      <form action={handleSubmitWithTodoId}>
+        <button type="submit" className="flex items-center justify-center">
+          <FontAwesomeIcon className="w-5 h-5" icon={faTrash} />
+        </button>
+      </form>
     </div>
   )
 }

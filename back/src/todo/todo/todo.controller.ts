@@ -22,7 +22,7 @@ export class TodoController {
 
   @Get()
   async getTodos(): Promise<Todo[]> {
-    return this.todoService.todos({});
+    return this.todoService.todos();
   }
 
   @Get(':id')

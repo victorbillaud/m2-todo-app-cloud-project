@@ -1,20 +1,15 @@
-"use client"
+'use client'
 
-import { useState } from 'react';
+import { handleCreateTodo } from "@/lib/action";
+import { useRef } from "react";
 
-export const TodoForm = ({addTodo}: {addTodo: (task: string) => void}) => {
-    const [value, setValue] = useState('');
+export default function TodoForm() {
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault();
-        if (value) {
-          addTodo(value);
-          setValue('');
-        }
-      };
+  const formRef = useRef<HTMLFormElement>(null);
+
   return (
-    <form onSubmit={handleSubmit} className="TodoForm">
-      <input type="text" value={value} onChange={(e) => setValue(e.target.value)} className="todo-input" placeholder='What is the task today?' />
+    <form ref={formRef} action={handleCreateTodo} className="TodoForm" >
+      <input type="text" name='title' className="todo-input" placeholder='What is the task today?' />
       <button type="submit" className='todo-btn'>Add Task</button>
     </form>
   )

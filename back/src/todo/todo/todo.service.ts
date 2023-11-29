@@ -14,21 +14,8 @@ export class TodoService {
     });
   }
 
-  async todos(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.TodoWhereUniqueInput;
-    where?: Prisma.TodoWhereInput;
-    orderBy?: Prisma.TodoOrderByWithRelationInput;
-  }): Promise<Todo[]> {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.todo.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-    });
+  async todos(): Promise<Todo[]> {
+    return this.prisma.todo.findMany();
   }
 
   async createTodo(data: Prisma.TodoCreateInput): Promise<Todo> {
