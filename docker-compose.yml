@@ -6,7 +6,7 @@ services:
   # database service
   db:
     # custom image with setup database
-    image: mysql:8.0
+    image: postgres:14-alpine
     # container name
     env_file:
       - ./.env
@@ -14,18 +14,16 @@ services:
     # restart app always except when manually stoppped
     restart: unless-stopped
     # allow connection with native password
-    command: --default-authentication-plugin=mysql_native_password
-    # port mapping
     ports:
-      - 3306:3306
+      - 5432:5432
     # environment variables
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: todoapp
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DATABASE: ${POSTGRES_DATABASE}
+      POSTGRES_USER: ${POSTGRES_USER}
+
     volumes:
-      - "./db:/var/lib/mysql"
+      - "./db:/var/lib/postgresql/data"
 
   frontend:
       container_name: frontend
