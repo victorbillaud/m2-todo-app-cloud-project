@@ -1,7 +1,9 @@
 import { Todo, TodoInsert, TodoUpdate } from "./types";
 
+const url = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8000'; 
+
 export const createTodo = async (todoData: TodoInsert): Promise<Todo[]> => {
-    const response = await fetch('http://localhost:8000/todo', {
+    const response = await fetch(`${url}/todo`, {
         method: 'POST',
         body: JSON.stringify(todoData),
         headers: {
@@ -13,7 +15,7 @@ export const createTodo = async (todoData: TodoInsert): Promise<Todo[]> => {
 }
 
 export const deleteTodo = async (todoId: Todo["id"]): Promise<Todo[]> => {
-    const response = await fetch('http://localhost:8000/todo', {
+    const response = await fetch(`${url}/todo`, {
         method: 'DELETE',
         body: JSON.stringify({
             id: todoId
@@ -31,7 +33,7 @@ export const deleteTodo = async (todoId: Todo["id"]): Promise<Todo[]> => {
 }
 
 export const listTodos = async (): Promise<Todo[]> => {
-    const response = await fetch('http://localhost:8000/todo', {
+    const response = await fetch(`${url}/todo`, {
         method: 'GET',
     });
 
@@ -43,7 +45,7 @@ export const listTodos = async (): Promise<Todo[]> => {
 }
 
 export const updateTodo = async (todoId: Todo["id"], todoData: TodoUpdate): Promise<Todo[]> => {
-    const response = await fetch('http://localhost:8000/todo', {
+    const response = await fetch(`${url}/todo`, {
         method: 'PUT',
         body: JSON.stringify({
             id: todoId,

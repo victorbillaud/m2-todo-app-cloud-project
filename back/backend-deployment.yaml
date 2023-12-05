@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: victorbillaud/todo-backend
+          ports:
+            - containerPort: 8000
+          env:
+            - name: PORT
+              value: '8000'
+            - name: DATABASE_URL
+              value: postgresql://todoapp:todoapp@db-service:5432/todoapp?schema=public
+
